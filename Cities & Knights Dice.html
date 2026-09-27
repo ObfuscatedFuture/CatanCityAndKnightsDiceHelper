@@ -1,0 +1,1267 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Cities &amp; Knights Dice</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Zilla+Slab:wght@500;600;700&display=swap">
+<style>
+  :root {
+    --ground: #E4EBE9;
+    --surface: #F8FAF9;
+    --surface-2: #EDF2F1;
+    --ink: #17252C;
+    --ink-2: #4A5B63;
+    --muted: #6B7C83;
+    --line: #D0DAD9;
+    --bar: #2A6477;
+    --bar-latest: #C3342B;
+    --expected: rgba(23, 37, 44, .5);
+    --token: #F2E5C4;
+    --token-ink: #2B2216;
+    --token-hot: #B92E25;
+    --token-edge: #D6C394;
+    --robber-bg: #1F2B31;
+    --robber-ink: #F2E9D2;
+    --gold: #EDB92E;
+    --gold-hi: #F7D060;
+    --gold-deep: #A87A0C;
+    --gold-ink: #2A1D05;
+    --tray-a: #2C6878;
+    --tray-b: #153A45;
+    --rim-1: #7A5332;
+    --rim-2: #8C603B;
+    --rim-3: #69462A;
+    --tray-ink: #F6F1E6;
+    --tray-muted: #B8CFD4;
+    --trade: #DDA918;
+    --politics: #2F68B0;
+    --science: #3A8A49;
+    --danger: #B8322A;
+    --focus: #2A6477;
+    --icon-edge: #1E2A30;
+    --shadow: 0 1px 2px rgba(23, 37, 44, .06), 0 10px 28px -14px rgba(23, 37, 44, .25);
+    --display: "Zilla Slab", "Rockwell", "Roboto Slab", Georgia, serif;
+    --body: "Figtree", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --ground: #0D161B;
+      --surface: #142129;
+      --surface-2: #1A2A33;
+      --ink: #E3ECEE;
+      --ink-2: #AFC1C7;
+      --muted: #869AA2;
+      --line: #263843;
+      --bar: #5AA3BD;
+      --bar-latest: #E4584C;
+      --expected: rgba(227, 236, 238, .5);
+      --token: #EADCB8;
+      --token-edge: #C9B585;
+      --robber-bg: #0A1216;
+      --gold-deep: #8F680A;
+      --tray-a: #255B6A;
+      --tray-b: #0F2E38;
+      --rim-1: #5E3F25;
+      --rim-2: #6D4A2C;
+      --rim-3: #51361F;
+      --trade: #E5B42A;
+      --politics: #4F86CF;
+      --science: #4FA35E;
+      --danger: #E4584C;
+      --focus: #7CC0D8;
+      --icon-edge: #0B1216;
+      --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 12px 30px -14px rgba(0, 0, 0, .6);
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --ground: #0D161B;
+    --surface: #142129;
+    --surface-2: #1A2A33;
+    --ink: #E3ECEE;
+    --ink-2: #AFC1C7;
+    --muted: #869AA2;
+    --line: #263843;
+    --bar: #5AA3BD;
+    --bar-latest: #E4584C;
+    --expected: rgba(227, 236, 238, .5);
+    --token: #EADCB8;
+    --token-edge: #C9B585;
+    --robber-bg: #0A1216;
+    --gold-deep: #8F680A;
+    --tray-a: #255B6A;
+    --tray-b: #0F2E38;
+    --rim-1: #5E3F25;
+    --rim-2: #6D4A2C;
+    --rim-3: #51361F;
+    --trade: #E5B42A;
+    --politics: #4F86CF;
+    --science: #4FA35E;
+    --danger: #E4584C;
+    --focus: #7CC0D8;
+    --icon-edge: #0B1216;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 12px 30px -14px rgba(0, 0, 0, .6);
+  }
+
+  html, body { min-height: 100%; }
+  body {
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: 15px;
+    line-height: 1.45;
+    -webkit-font-smoothing: antialiased;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  button { font: inherit; color: inherit; }
+  :focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; border-radius: 6px; }
+
+  .app {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding-inline: clamp(16px, 3vw, 32px);
+    padding-block: 18px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .top { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+  .top h1 {
+    margin: 0;
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: clamp(24px, 3.2vw, 30px);
+    letter-spacing: -.005em;
+    line-height: 1.1;
+    text-wrap: balance;
+  }
+  .top h1 span { color: var(--muted); font-weight: 500; }
+  .hint { margin: 0; color: var(--muted); font-size: 13px; }
+  kbd {
+    font-family: var(--body);
+    font-size: 11.5px;
+    font-weight: 600;
+    padding: 2px 7px;
+    border-radius: 5px;
+    border: 1px solid var(--line);
+    border-bottom-width: 2px;
+    background: var(--surface);
+    color: var(--ink-2);
+  }
+  @media (hover: none) { .hint { display: none; } }
+
+  .layout {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: 20px;
+    align-items: start;
+  }
+  @media (max-width: 900px) { .layout { grid-template-columns: minmax(0, 1fr); } }
+
+  .roller { display: flex; flex-direction: column; gap: 18px; }
+
+  /* Dice tray: felt with a wooden rim */
+  .tray {
+    position: relative;
+    border: 10px solid transparent;
+    border-radius: 24px;
+    padding: clamp(18px, 3vw, 28px) clamp(14px, 2.5vw, 24px) clamp(16px, 2.5vw, 22px);
+    color: var(--tray-ink);
+    background:
+      radial-gradient(rgba(255, 255, 255, .045) 1px, transparent 1.2px) 0 0 / 5px 5px padding-box,
+      radial-gradient(120% 95% at 50% 18%, var(--tray-a), var(--tray-b)) padding-box,
+      repeating-linear-gradient(97deg, var(--rim-1) 0 7px, var(--rim-2) 7px 10px, var(--rim-3) 10px 16px, var(--rim-1) 16px 21px) border-box;
+    box-shadow: inset 0 12px 26px rgba(0, 0, 0, .38), inset 0 0 0 1px rgba(0, 0, 0, .35), var(--shadow);
+  }
+
+  .dice { display: flex; justify-content: center; gap: clamp(14px, 4vw, 30px); }
+  .slot { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+  .die-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--tray-muted);
+  }
+  .die {
+    --size: clamp(66px, 17vw, 94px);
+    width: var(--size);
+    height: var(--size);
+    border-radius: 20%;
+    display: grid;
+    place-items: center;
+    box-shadow:
+      inset 0 -5px 0 rgba(0, 0, 0, .2),
+      inset 0 3px 0 rgba(255, 255, 255, .35),
+      0 12px 18px -4px rgba(0, 0, 0, .45);
+    transition: opacity .25s, filter .25s;
+  }
+  .die-red { background: linear-gradient(145deg, #D9483E, #B02A22); --pip: #FBF3E4; }
+  .die-yellow { background: linear-gradient(145deg, #F7D253, #E0AB1F); --pip: #3B2A0C; }
+  .die-event { background: linear-gradient(145deg, #FCFAF3, #E4DDCB); color: #1E2A30; --cut: #F4F0E6; --icon-edge: #1E2A30; }
+  .die-event svg { width: 72%; height: 72%; }
+  .pips { width: 76%; height: 76%; display: grid; grid-template: repeat(3, 1fr) / repeat(3, 1fr); }
+  .pips i { width: 62%; aspect-ratio: 1; border-radius: 50%; place-self: center; }
+  .pips i.on { background: var(--pip); box-shadow: inset 0 2px 1px rgba(0, 0, 0, .28); }
+  .tray.idle .die { opacity: .5; filter: saturate(.55); }
+
+  .die.tumble { animation: tumble .56s cubic-bezier(.3, .7, .3, 1); }
+  .slot:nth-child(2) .die.tumble { animation-duration: .6s; animation-direction: reverse; }
+  .slot:nth-child(3) .die.tumble { animation-duration: .52s; }
+  @keyframes tumble {
+    0% { transform: translateY(0) rotate(0); }
+    22% { transform: translateY(-22px) rotate(-80deg) scale(1.04); }
+    48% { transform: translateY(-4px) rotate(150deg); }
+    70% { transform: translateY(-12px) rotate(280deg); }
+    100% { transform: translateY(0) rotate(360deg); }
+  }
+
+  .ico { fill: currentColor; }
+  .ico .stripe { fill: none; stroke: var(--cut, var(--surface)); stroke-width: 2; }
+  .ico .wave { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; opacity: .55; }
+  .gate path { fill: var(--gate); stroke: var(--icon-edge); stroke-width: 2; stroke-linejoin: round; }
+
+  .readout {
+    margin-top: clamp(18px, 3vw, 24px);
+    padding-top: 18px;
+    border-top: 1px solid rgba(255, 255, 255, .14);
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 12px 20px;
+    align-items: center;
+  }
+  .sum-block { display: flex; flex-direction: column; align-items: center; gap: 4px; min-width: 88px; }
+  .sum {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: clamp(60px, 10vw, 84px);
+    line-height: .85;
+    font-variant-numeric: lining-nums tabular-nums;
+  }
+  .sum.pop { animation: pop .32s cubic-bezier(.3, 1.5, .5, 1); }
+  @keyframes pop { from { transform: scale(.72); opacity: .3; } to { transform: scale(1); opacity: 1; } }
+  .sum-sub { font-size: 12.5px; color: var(--tray-muted); font-variant-numeric: lining-nums tabular-nums; white-space: nowrap; }
+  .event-block {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-left: 20px;
+    border-left: 1px solid rgba(255, 255, 255, .14);
+    min-height: 64px;
+  }
+  .event-icon {
+    flex: none;
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    display: grid;
+    place-items: center;
+    background: linear-gradient(145deg, #FCFAF3, #E4DDCB);
+    color: #1E2A30;
+    --cut: #F4F0E6;
+    --icon-edge: #1E2A30;
+    box-shadow: 0 4px 8px -2px rgba(0, 0, 0, .4);
+  }
+  .event-icon svg { width: 32px; height: 32px; }
+  .event-title { font-weight: 700; font-size: 17px; line-height: 1.2; }
+  .event-sub { font-size: 13px; color: var(--tray-muted); margin-top: 2px; text-wrap: pretty; }
+  .tray.attack .event-title { color: #FFB1A8; }
+  .note {
+    grid-column: 1 / -1;
+    background: rgba(0, 0, 0, .24);
+    border-radius: 10px;
+    padding: 9px 12px;
+    font-size: 13.5px;
+    line-height: 1.35;
+  }
+  .note b { color: var(--gold-hi); font-weight: 700; margin-right: 4px; }
+  @media (max-width: 420px) {
+    .readout { grid-template-columns: minmax(0, 1fr); }
+    .event-block { padding-left: 0; border-left: 0; border-top: 1px solid rgba(255, 255, 255, .14); padding-top: 12px; }
+  }
+
+  /* The big button */
+  .roll {
+    width: 100%;
+    min-height: clamp(88px, 13vh, 116px);
+    border: 0;
+    border-radius: 20px;
+    background: linear-gradient(180deg, var(--gold-hi), var(--gold));
+    color: var(--gold-ink);
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: clamp(36px, 5vw, 46px);
+    letter-spacing: .03em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    cursor: pointer;
+    box-shadow: 0 7px 0 var(--gold-deep), 0 18px 26px -12px rgba(0, 0, 0, .45);
+    transition: transform .07s ease-out, box-shadow .07s ease-out, filter .15s;
+    margin-bottom: 7px;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+  .roll svg { width: 44px; height: 44px; flex: none; }
+  .roll:hover { filter: brightness(1.04); }
+  .roll:active, .roll.pressed { transform: translateY(5px); box-shadow: 0 2px 0 var(--gold-deep), 0 8px 14px -10px rgba(0, 0, 0, .45); }
+  .roll:focus-visible { outline-offset: 6px; border-radius: 20px; }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    box-shadow: var(--shadow);
+    padding: clamp(16px, 2.2vw, 22px);
+  }
+  .label {
+    font-size: 11.5px;
+    font-weight: 600;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .ghost-btn {
+    border: 1px solid var(--line);
+    background: var(--surface);
+    color: var(--ink-2);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background .15s, color .15s, border-color .15s;
+    white-space: nowrap;
+  }
+  .ghost-btn:hover:not(:disabled) { background: var(--surface-2); color: var(--ink); }
+  .ghost-btn:disabled { opacity: .45; cursor: default; }
+  .ghost-btn.confirm { background: var(--danger); border-color: var(--danger); color: #fff; }
+
+  /* Status card: barbarians + recent rolls */
+  .status { display: flex; flex-direction: column; gap: 18px; }
+  .barb-count { font-family: var(--display); font-weight: 700; font-size: 20px; font-variant-numeric: lining-nums tabular-nums; }
+  .barb-count.attack { color: var(--danger); }
+  .barb-track { position: relative; display: flex; justify-content: space-between; align-items: center; margin-top: 10px; }
+  .barb-track::before, .barb-track::after {
+    content: "";
+    position: absolute;
+    left: 17px;
+    top: 50%;
+    height: 2px;
+    margin-top: -1px;
+  }
+  .barb-track::before { right: 17px; background: var(--line); }
+  .barb-track::after { width: calc((100% - 34px) * var(--p, 0)); background: var(--bar); transition: width .35s ease; }
+  .barb-track.attack::after { background: var(--danger); }
+  .node { position: relative; z-index: 1; width: 34px; height: 34px; display: grid; place-items: center; }
+  .node::before {
+    content: "";
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--surface);
+    border: 2px solid var(--line);
+  }
+  .node.past::before { background: var(--bar); border-color: var(--bar); }
+  .attack .node.past::before { background: var(--danger); border-color: var(--danger); }
+  .node.goal::before { display: none; }
+  .node.goal svg { width: 30px; height: 30px; }
+  .node.ship::before { display: none; }
+  .node.ship {
+    border-radius: 50%;
+    background: var(--ink);
+    color: var(--surface);
+    --cut: var(--ink);
+    box-shadow: 0 0 0 3px var(--surface);
+  }
+  .attack .node.ship { background: var(--danger); color: #fff; --cut: var(--danger); }
+  .node.ship svg { width: 24px; height: 24px; }
+  .barb-ends { display: flex; justify-content: space-between; margin-top: 6px; font-size: 12px; color: var(--muted); }
+  .barb-foot { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12.5px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: var(--surface-2);
+    color: var(--ink-2);
+  }
+  .pill::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--muted); }
+  .pill.on::before { background: var(--danger); }
+
+  .divider { height: 1px; background: var(--line); margin: 0; border: 0; }
+  .recent-list { list-style: none; margin: 12px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip {
+    width: 42px;
+    padding: 5px 0 4px;
+    border-radius: 9px;
+    background: var(--surface-2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1px;
+    border: 1.5px solid transparent;
+    --cut: var(--surface-2);
+    color: var(--ink);
+  }
+  .chip b { font-family: var(--display); font-weight: 700; font-size: 18px; line-height: 1; font-variant-numeric: lining-nums tabular-nums; }
+  .chip svg { width: 15px; height: 15px; }
+  .chip .gate path { stroke-width: 3; }
+  .chip.newest { border-color: var(--ink); background: var(--surface); --cut: var(--surface); }
+  .empty { color: var(--muted); font-size: 13.5px; }
+
+  /* Distribution */
+  .dist { display: flex; flex-direction: column; gap: 16px; }
+  .dist-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+  .dist-head h2 { margin: 0; font-family: var(--display); font-weight: 700; font-size: 24px; line-height: 1.1; }
+  .dist-meta { margin: 3px 0 0; color: var(--muted); font-size: 13.5px; font-variant-numeric: lining-nums tabular-nums; }
+  .dist-meta strong { color: var(--ink); font-weight: 700; }
+
+  .chart {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(11, minmax(0, 1fr));
+    gap: clamp(3px, 1vw, 9px);
+    height: clamp(270px, 56vh, 480px);
+  }
+  .col { display: grid; grid-template-rows: minmax(0, 1fr) auto; gap: 10px; min-width: 0; cursor: default; border-radius: 6px; }
+  .col:focus-visible { outline-offset: 2px; }
+  .track {
+    position: relative;
+    border-bottom: 1.5px solid var(--line);
+    background: repeating-linear-gradient(to top, transparent 0 calc(25% - 1px), color-mix(in srgb, var(--line) 55%, transparent) calc(25% - 1px) 25%);
+  }
+  .bar, .ghost { position: absolute; left: 0; right: 0; bottom: 0; height: 0; border-radius: 4px 4px 0 0; transition: height .42s cubic-bezier(.2, .8, .2, 1); }
+  .bar { background: var(--bar); transition-property: height, background-color; }
+  .ghost { border: 1.5px dashed var(--expected); border-bottom: 0; pointer-events: none; }
+  .col.latest .bar { background: var(--bar-latest); }
+  .col:hover .bar, .col:focus-visible .bar { filter: brightness(1.12); }
+  .count {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 4px;
+    text-align: center;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--ink-2);
+    font-variant-numeric: lining-nums tabular-nums;
+    transition: bottom .42s cubic-bezier(.2, .8, .2, 1);
+  }
+  .col.latest .count { color: var(--ink); }
+
+  .token {
+    justify-self: center;
+    width: min(100%, 42px);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: var(--token);
+    color: var(--token-ink);
+    box-shadow: inset 0 0 0 1px var(--token-edge), 0 1px 2px rgba(0, 0, 0, .18);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: .12em;
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: clamp(11px, 2.6vw, 17px);
+    line-height: 1;
+    font-variant-numeric: lining-nums tabular-nums;
+    transition: box-shadow .2s;
+  }
+  .token.hot { color: var(--token-hot); }
+  .token.robber { background: var(--robber-bg); color: var(--robber-ink); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .15), 0 1px 2px rgba(0, 0, 0, .18); }
+  .dots { display: flex; gap: max(1px, .08em); }
+  .dots i { width: max(2px, .17em); aspect-ratio: 1; border-radius: 50%; background: currentColor; }
+  .col.latest .token { box-shadow: inset 0 0 0 1px var(--token-edge), 0 0 0 2px var(--surface), 0 0 0 4px var(--bar-latest); }
+
+  .tip {
+    position: absolute;
+    z-index: 5;
+    transform: translate(-50%, -100%);
+    background: var(--ink);
+    color: var(--surface);
+    font-size: 12.5px;
+    line-height: 1.4;
+    padding: 7px 10px;
+    border-radius: 8px;
+    white-space: nowrap;
+    pointer-events: none;
+    box-shadow: 0 6px 18px -6px rgba(0, 0, 0, .45);
+    font-variant-numeric: lining-nums tabular-nums;
+  }
+  .tip b { font-family: var(--display); font-size: 15px; }
+  .tip span { opacity: .75; }
+
+  .legend { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px; font-size: 12.5px; color: var(--ink-2); }
+  .key { display: inline-flex; align-items: center; gap: 7px; }
+  .sw { width: 14px; height: 12px; border-radius: 3px 3px 0 0; }
+  .sw-bar { background: var(--bar); }
+  .sw-latest { background: var(--bar-latest); }
+  .sw-exp { border: 1.5px dashed var(--expected); border-bottom: 0; }
+  .legend .empty-note { flex-basis: 100%; color: var(--muted); }
+
+  .tally-wrap { border-top: 1px solid var(--line); padding-top: 14px; }
+  .tally { list-style: none; margin: 10px 0 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+  @media (max-width: 560px) { .tally { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .tally li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 12px;
+    background: var(--surface-2);
+    --cut: var(--surface-2);
+    min-width: 0;
+  }
+  .tally svg { width: 28px; height: 28px; flex: none; }
+  .t-name { font-size: 12.5px; color: var(--ink-2); font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .t-val { display: flex; align-items: baseline; gap: 6px; font-variant-numeric: lining-nums tabular-nums; }
+  .t-val b { font-family: var(--display); font-size: 21px; line-height: 1.1; }
+  .t-val span { font-size: 12px; color: var(--muted); white-space: nowrap; }
+
+  /* Settings */
+  .top-actions { display: flex; align-items: center; gap: 14px; }
+  .icon-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    color: var(--ink-2);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 6px 13px 6px 10px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background .15s, color .15s;
+  }
+  .icon-btn svg { width: 16px; height: 16px; }
+  .icon-btn:hover { background: var(--surface-2); color: var(--ink); }
+
+  .settings {
+    width: min(620px, calc(100% - 32px));
+    padding: 0;
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    background: var(--surface);
+    color: var(--ink);
+    box-shadow: 0 30px 80px -20px rgba(0, 0, 0, .55);
+    overflow: hidden;
+  }
+  .settings::backdrop { background: rgba(8, 18, 23, .55); backdrop-filter: blur(3px); }
+  .set-form { display: flex; flex-direction: column; max-height: min(780px, calc(100vh - 32px)); max-height: min(780px, calc(100dvh - 32px)); }
+  .set-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 16px 16px 14px 22px; border-bottom: 1px solid var(--line); }
+  .set-head h2 { margin: 0; font-family: var(--display); font-weight: 700; font-size: 22px; }
+  .close-btn {
+    width: 36px;
+    height: 36px;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--ink-2);
+    font-size: 24px;
+    line-height: 1;
+    cursor: pointer;
+  }
+  .close-btn:hover { background: var(--surface-2); color: var(--ink); }
+  .set-body { flex: 1; min-height: 0; overflow-y: auto; padding: 18px 22px 22px; display: flex; flex-direction: column; gap: 26px; }
+  .set-sec-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+  .set-sec h3 { margin: 0; font-size: 16px; font-weight: 700; }
+  .set-total { font-size: 13px; color: var(--muted); font-variant-numeric: lining-nums tabular-nums; }
+  .help { margin: 3px 0 12px; font-size: 13px; color: var(--muted); text-wrap: pretty; }
+  .set-foot { display: flex; justify-content: flex-end; gap: 10px; padding: 14px 22px; border-top: 1px solid var(--line); }
+  .ghost-btn.lg { font-size: 14px; padding: 9px 18px; }
+  .primary-btn {
+    border: 0;
+    background: var(--ink);
+    color: var(--surface);
+    font-size: 14px;
+    font-weight: 700;
+    padding: 9px 22px;
+    border-radius: 999px;
+    cursor: pointer;
+  }
+  .primary-btn:hover { filter: brightness(1.15); }
+
+  .seg { position: relative; display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; }
+  .seg input { position: absolute; opacity: 0; pointer-events: none; }
+  .seg label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    height: 56px;
+    border-radius: 11px;
+    border: 1.5px solid var(--line);
+    background: var(--surface-2);
+    color: var(--ink-2);
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 19px;
+    line-height: 1;
+    font-variant-numeric: lining-nums;
+    cursor: pointer;
+    --cut: var(--surface-2);
+    transition: background .12s, border-color .12s;
+  }
+  .seg label:hover { border-color: var(--ink-2); }
+  .seg label svg { display: none; width: 22px; height: 22px; }
+  .seg input:checked + label { background: var(--ink); border-color: var(--ink); color: var(--surface); --cut: var(--ink); }
+  .seg input:checked + label svg { display: block; }
+  .seg input:focus-visible + label { outline: 3px solid var(--focus); outline-offset: 2px; }
+  .seg-ends { display: flex; justify-content: space-between; margin-top: 6px; font-size: 12px; color: var(--muted); }
+  .set-line { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 16px; padding: 12px 14px; border-radius: 12px; background: var(--surface-2); }
+  .set-line .help { margin: 2px 0 0; }
+  .set-line-title { font-weight: 600; font-size: 14px; }
+
+  .stepper { flex: none; display: inline-flex; align-items: center; border: 1.5px solid var(--line); border-radius: 10px; background: var(--surface); overflow: hidden; }
+  .stepper button { width: 34px; height: 36px; border: 0; background: transparent; color: var(--ink-2); font-size: 18px; font-weight: 600; cursor: pointer; }
+  .stepper button:hover { background: var(--surface-2); color: var(--ink); }
+  .stepper button:focus-visible { outline-offset: -3px; }
+  .stepper input {
+    width: 50px;
+    height: 36px;
+    border: 0;
+    border-inline: 1.5px solid var(--line);
+    border-radius: 0;
+    background: transparent;
+    color: var(--ink);
+    text-align: center;
+    font: 600 16px var(--body);
+    font-variant-numeric: lining-nums tabular-nums;
+    -moz-appearance: textfield;
+    appearance: textfield;
+  }
+  .stepper input::-webkit-inner-spin-button, .stepper input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+  .stepper input:focus-visible { outline-offset: -3px; border-radius: 0; }
+
+  .count-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(168px, 1fr)); gap: 8px; }
+  .count-cell {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 6px 6px 6px 8px;
+    border-radius: 12px;
+    background: var(--surface-2);
+    --cut: var(--surface-2);
+    min-width: 0;
+  }
+  .count-cell .token { width: 34px; flex: none; font-size: 14px; }
+  .ev-name { display: flex; align-items: center; gap: 8px; min-width: 0; font-size: 13px; font-weight: 600; color: var(--ink-2); }
+  .ev-name svg { width: 24px; height: 24px; flex: none; }
+  .ev-name span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+  }
+</style>
+
+<div class="app">
+  <header class="top">
+    <h1>Cities &amp; Knights Dice</h1>
+    <div class="top-actions">
+      <p class="hint">Press <kbd>Space</kbd> to roll</p>
+      <button class="icon-btn" id="openSettings" type="button" aria-haspopup="dialog">
+        <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+        Settings
+      </button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <section class="roller" aria-label="Dice roller">
+      <div class="tray idle" id="tray">
+        <div class="dice">
+          <div class="slot"><div class="die die-red" id="dieRed" role="img" aria-label="Red die"><div class="pips"></div></div><span class="die-label">Red</span></div>
+          <div class="slot"><div class="die die-yellow" id="dieYellow" role="img" aria-label="Yellow die"><div class="pips"></div></div><span class="die-label">Yellow</span></div>
+          <div class="slot"><div class="die die-event" id="dieEvent" role="img" aria-label="Event die"></div><span class="die-label">Event</span></div>
+        </div>
+        <div class="readout" aria-live="polite">
+          <div class="sum-block">
+            <div class="sum" id="sum">–</div>
+            <div class="sum-sub" id="sumSub">No rolls yet</div>
+          </div>
+          <div class="event-block">
+            <div class="event-icon" id="eventIcon" hidden></div>
+            <div>
+              <div class="event-title" id="eventTitle">Ready for the first roll</div>
+              <div class="event-sub" id="eventSub">Each roll throws the red, yellow and event dice together.</div>
+            </div>
+          </div>
+          <div class="note" id="note" hidden></div>
+        </div>
+      </div>
+
+      <button class="roll" id="roll" type="button">
+        <svg viewBox="0 0 48 48" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round">
+          <rect x="4" y="15" width="22" height="22" rx="5" transform="rotate(-12 15 26)"/>
+          <rect x="21" y="9" width="22" height="22" rx="5" transform="rotate(14 32 20)"/>
+          <circle cx="11" cy="24" r="1.8" fill="currentColor" stroke="none"/>
+          <circle cx="19" cy="29" r="1.8" fill="currentColor" stroke="none"/>
+          <circle cx="32" cy="20" r="1.8" fill="currentColor" stroke="none"/>
+        </svg>
+        <span>Roll</span>
+      </button>
+
+      <div class="card status">
+        <div class="barb">
+          <div class="row">
+            <span class="label">Barbarian ship</span>
+            <span class="barb-count" id="barbCount">0 / 7</span>
+          </div>
+          <div class="barb-track" id="barbTrack" role="img" aria-label="Barbarian ship at 0 of 7"></div>
+          <div class="barb-ends"><span>Open sea</span><span>Catan</span></div>
+          <div class="barb-foot">
+            <span class="pill" id="attacks">No attacks yet</span>
+            <span class="pill" id="robber">Robber in the desert</span>
+          </div>
+        </div>
+        <hr class="divider">
+        <div class="recent">
+          <div class="row">
+            <span class="label">Recent rolls</span>
+            <button class="ghost-btn" id="undo" type="button" disabled>Undo last</button>
+          </div>
+          <ul class="recent-list" id="recent"></ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="card dist" aria-label="Dice distribution">
+      <div class="dist-head">
+        <div>
+          <h2>Distribution</h2>
+          <p class="dist-meta" id="distMeta"><strong>0</strong> rolls this game</p>
+        </div>
+        <button class="ghost-btn" id="reset" type="button" disabled>Reset</button>
+      </div>
+
+      <div class="chart" id="chart">
+        <div class="tip" id="tip" hidden></div>
+      </div>
+
+      <div class="legend" id="legend">
+        <span class="key"><i class="sw sw-bar"></i>Rolled</span>
+        <span class="key"><i class="sw sw-latest"></i>Last roll</span>
+        <span class="key"><i class="sw sw-exp"></i><span id="expLabel">Expected</span></span>
+        <span class="empty-note" id="emptyNote">No rolls yet. The dashed outlines show how often each number should come up.</span>
+      </div>
+
+      <div class="tally-wrap">
+        <span class="label">Event die</span>
+        <ul class="tally" id="tally"></ul>
+      </div>
+    </section>
+  </main>
+</div>
+
+<dialog class="settings" id="settings" aria-labelledby="settingsTitle">
+  <form class="set-form" id="settingsForm">
+    <div class="set-head">
+      <h2 id="settingsTitle">Game settings</h2>
+      <button type="button" class="close-btn" id="closeSettings" aria-label="Close settings">×</button>
+    </div>
+    <div class="set-body">
+      <section class="set-sec">
+        <div class="set-sec-head"><h3>Barbarian ship</h3></div>
+        <p class="help">How many spaces the ship has sailed from the open sea. It attacks when it reaches the 7th.</p>
+        <div class="seg" id="seg" role="radiogroup" aria-label="Ship position"></div>
+        <div class="seg-ends"><span>Open sea</span><span>One space from Catan</span></div>
+        <div class="set-line">
+          <div>
+            <div class="set-line-title">Attacks so far</div>
+            <div class="help">The robber can move after the first attack.</div>
+          </div>
+          <div class="stepper">
+            <button type="button" data-for="setAttacks" data-step="-1" aria-label="Fewer attacks">−</button>
+            <input id="setAttacks" type="number" inputmode="numeric" min="0" max="99" step="1" aria-label="Attacks so far">
+            <button type="button" data-for="setAttacks" data-step="1" aria-label="More attacks">+</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="set-sec">
+        <div class="set-sec-head"><h3>Number rolls</h3><span class="set-total" id="sumTotal">0 rolls</span></div>
+        <p class="help">Joining mid-game? Enter how many times each number has come up. New rolls add to these counts.</p>
+        <div class="count-grid" id="sumGrid"></div>
+      </section>
+
+      <section class="set-sec">
+        <div class="set-sec-head"><h3>Event die</h3><span class="set-total" id="evTotal">0 rolls</span></div>
+        <p class="help">How many times each event die face has come up.</p>
+        <div class="count-grid" id="evGrid"></div>
+      </section>
+    </div>
+    <div class="set-foot">
+      <button type="button" class="ghost-btn lg" id="cancelSettings">Cancel</button>
+      <button type="submit" class="primary-btn">Save</button>
+    </div>
+  </form>
+</dialog>
+
+<script>
+(() => {
+  const KEY = 'ck-dice-tracker-v2';
+  const OLD_KEY = 'ck-dice-tracker-v1';
+  const SUMS = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+  const WAYS = { 2: 1, 3: 2, 4: 3, 5: 4, 6: 5, 7: 6, 8: 5, 9: 4, 10: 3, 11: 2, 12: 1 };
+  const PIPS = { 1: [4], 2: [2, 6], 3: [2, 4, 6], 4: [0, 2, 6, 8], 5: [0, 2, 4, 6, 8], 6: [0, 2, 3, 5, 6, 8] };
+  // Event die faces: 0-2 barbarian ship, 3-5 city gates.
+  const GATES = {
+    3: { key: 'trade', name: 'Trade', color: 'var(--trade)' },
+    4: { key: 'politics', name: 'Politics', color: 'var(--politics)' },
+    5: { key: 'science', name: 'Science', color: 'var(--science)' },
+  };
+  const EV_KEYS = ['ship', 'trade', 'politics', 'science'];
+  const isShip = e => e < 3;
+  const evKey = e => isShip(e) ? 'ship' : GATES[e].key;
+
+  const shipSvg = () => `<svg viewBox="0 0 48 48" aria-hidden="true" class="ico"><path d="M23 5h2.2v25H23z"/><path d="M12.5 9h23l-2.6 16H15.1z"/><path class="stripe" d="M13.6 15.5h20.8M14.6 21h18.8"/><path d="M3.5 25.2c2-1.8 4.6-1.4 5.6 1L10.4 29h27.2l1.3-2.8c1-2.4 3.6-2.8 5.6-1C43.4 33 38 38 31 38H17C10 38 4.6 33 3.5 25.2z"/><path class="wave" d="M7 43c3-1.8 6-1.8 9 0s6 1.8 9 0 6-1.8 9 0 6 1.8 9 0"/></svg>`;
+  const gateSvg = color => `<svg viewBox="0 0 48 48" aria-hidden="true" class="ico gate" style="--gate:${color}"><path fill-rule="evenodd" d="M8 41V9.5h6.5V15h4V9.5h11V15h4V9.5H40V41zM19.5 41v-9a4.5 4.5 0 0 1 9 0v9z"/></svg>`;
+  const eventSvg = e => isShip(e) ? shipSvg() : gateSvg(GATES[e].color);
+  const eventName = e => isShip(e) ? 'Barbarian ship' : `${GATES[e].name} gate`;
+  const EVENT_META = {
+    ship: { name: 'Barbarian ship', icon: shipSvg(), p: 1 / 2 },
+    trade: { name: 'Trade', icon: gateSvg(GATES[3].color), p: 1 / 6 },
+    politics: { name: 'Politics', icon: gateSvg(GATES[4].color), p: 1 / 6 },
+    science: { name: 'Science', icon: gateSvg(GATES[5].color), p: 1 / 6 },
+  };
+  const tokenHTML = s => `<span class="token${s === 6 || s === 8 ? ' hot' : s === 7 ? ' robber' : ''}" aria-hidden="true"><span>${s}</span><span class="dots">${'<i></i>'.repeat(WAYS[s])}</span></span>`;
+
+  const $ = id => document.getElementById(id);
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const zeroSums = () => Object.fromEntries(SUMS.map(s => [s, 0]));
+  const zeroEvents = () => ({ ship: 0, trade: 0, politics: 0, science: 0 });
+  // rolls: real rolls made here (for undo and the recent list)
+  // adj: hand-entered offsets added on top of the rolls
+  // barb: current ship position (0-6), attack count, and whether the last roll caused an attack
+  const freshState = () => ({ rolls: [], adj: { sums: zeroSums(), events: zeroEvents() }, barb: { pos: 0, attacks: 0, hit: false } });
+  const sumOf = o => Object.values(o).reduce((a, b) => a + b, 0);
+  const int = (v, lo, hi) => {
+    const n = Math.round(Number(v));
+    return Math.min(hi, Math.max(lo, Number.isFinite(n) ? n : 0));
+  };
+
+  let st = freshState();
+  let busy = false;
+  let counts = zeroSums();
+  let total = 0;
+
+  const valid = x => x && [x.r, x.y].every(v => Number.isInteger(v) && v >= 1 && v <= 6) && Number.isInteger(x.e) && x.e >= 0 && x.e <= 5;
+
+  // Moves the ship for one roll; marks the roll when it triggers an attack so undo can reverse it.
+  function advance(b, x) {
+    if (isShip(x.e) && ++b.pos >= 7) {
+      b.pos = 0;
+      b.attacks++;
+      b.hit = true;
+      x.a = 1;
+    } else {
+      b.hit = false;
+    }
+  }
+
+  function normalize(d) {
+    const s = freshState();
+    if (!d || typeof d !== 'object') return s;
+    s.rolls = Array.isArray(d.rolls) ? d.rolls.filter(valid).map(x => (x.a ? { r: x.r, y: x.y, e: x.e, a: 1 } : { r: x.r, y: x.y, e: x.e })) : [];
+    if (d.barb && typeof d.barb === 'object') {
+      s.barb = { pos: int(d.barb.pos, 0, 6), attacks: int(d.barb.attacks, 0, 99), hit: !!d.barb.hit };
+    } else {
+      s.rolls.forEach(x => advance(s.barb, x)); // older saves only kept rolls
+    }
+    if (d.adj && typeof d.adj === 'object') {
+      SUMS.forEach(k => { s.adj.sums[k] = int(d.adj.sums?.[k], -9999, 9999); });
+      EV_KEYS.forEach(k => { s.adj.events[k] = int(d.adj.events?.[k], -9999, 9999); });
+    }
+    return s;
+  }
+  function load() {
+    try {
+      const v2 = localStorage.getItem(KEY);
+      if (v2) return normalize(JSON.parse(v2));
+      const v1 = localStorage.getItem(OLD_KEY);
+      if (v1) return normalize({ rolls: JSON.parse(v1) });
+    } catch {}
+    return freshState();
+  }
+  function save() {
+    try {
+      localStorage.setItem(KEY, JSON.stringify(st));
+      localStorage.removeItem(OLD_KEY);
+    } catch {}
+  }
+
+  function rolledTotals() {
+    const sums = zeroSums(), events = zeroEvents();
+    st.rolls.forEach(x => { sums[x.r + x.y]++; events[evKey(x.e)]++; });
+    return { sums, events };
+  }
+  function totals() {
+    const t = rolledTotals();
+    SUMS.forEach(s => { t.sums[s] = Math.max(0, t.sums[s] + st.adj.sums[s]); });
+    EV_KEYS.forEach(k => { t.events[k] = Math.max(0, t.events[k] + st.adj.events[k]); });
+    return t;
+  }
+
+  function d6() {
+    try {
+      const b = new Uint8Array(1);
+      do { crypto.getRandomValues(b); } while (b[0] >= 252);
+      return b[0] % 6;
+    } catch { return Math.floor(Math.random() * 6); }
+  }
+  const throwDice = () => ({ r: d6() + 1, y: d6() + 1, e: d6() });
+
+  const pipsHTML = v => Array.from({ length: 9 }, (_, i) => `<i${PIPS[v].includes(i) ? ' class="on"' : ''}></i>`).join('');
+  function paintDice(x) {
+    $('dieRed').firstElementChild.innerHTML = pipsHTML(x.r);
+    $('dieYellow').firstElementChild.innerHTML = pipsHTML(x.y);
+    $('dieEvent').innerHTML = eventSvg(x.e);
+  }
+
+  // Build chart columns once
+  const chart = $('chart'), tip = $('tip');
+  const cols = SUMS.map(s => {
+    const col = document.createElement('div');
+    col.className = 'col';
+    col.dataset.s = s;
+    col.tabIndex = 0;
+    col.innerHTML = `<div class="track"><div class="bar"></div><div class="ghost"></div><span class="count">0</span></div>${tokenHTML(s)}`;
+    chart.insertBefore(col, tip);
+    col.addEventListener('pointerenter', () => showTip(col));
+    col.addEventListener('pointerleave', hideTip);
+    col.addEventListener('focus', () => showTip(col));
+    col.addEventListener('blur', hideTip);
+    return col;
+  });
+
+  const pct = v => (v * 100).toFixed(1) + '%';
+  function showTip(col) {
+    const s = +col.dataset.s, n = total, c = counts[s] || 0;
+    const p = WAYS[s] / 36;
+    tip.innerHTML = n
+      ? `<b>${s}</b> &nbsp;rolled ${c}× (${pct(c / n)})<br><span>Expected ${(n * p).toFixed(1)} (${pct(p)})</span>`
+      : `<b>${s}</b> &nbsp;${WAYS[s]} of 36 combinations<br><span>Expected ${pct(p)} of rolls</span>`;
+    tip.hidden = false;
+    const cr = chart.getBoundingClientRect();
+    const lr = col.querySelector('.count').getBoundingClientRect();
+    const w = tip.offsetWidth;
+    let x = lr.left + lr.width / 2 - cr.left;
+    x = Math.max(w / 2, Math.min(cr.width - w / 2, x));
+    tip.style.left = x + 'px';
+    tip.style.top = (lr.top - cr.top - 6) + 'px';
+  }
+  function hideTip() { tip.hidden = true; }
+
+  function renderReadout(last, b) {
+    const tray = $('tray');
+    tray.classList.toggle('idle', !last);
+    tray.classList.toggle('attack', !!last && b.hit);
+    paintDice(last || { r: 5, y: 2, e: 0 });
+    const note = $('note');
+    if (!last) {
+      $('sum').textContent = '–';
+      $('sumSub').textContent = 'No rolls yet';
+      $('eventIcon').hidden = true;
+      $('eventTitle').textContent = 'Ready for the first roll';
+      $('eventSub').textContent = 'Each roll throws the red, yellow and event dice together.';
+      note.hidden = true;
+      return;
+    }
+    const s = last.r + last.y;
+    $('sum').textContent = s;
+    $('sumSub').textContent = `Red ${last.r} · Yellow ${last.y}`;
+    $('eventIcon').hidden = false;
+    $('eventIcon').innerHTML = eventSvg(last.e);
+    if (isShip(last.e)) {
+      if (b.hit) {
+        $('eventTitle').textContent = 'Barbarians attack!';
+        $('eventSub').textContent = 'Compare active knight strength with the number of cities. The ship returns to the open sea.';
+      } else {
+        $('eventTitle').textContent = 'Barbarians advance';
+        $('eventSub').textContent = `The ship is ${b.pos} of 7 spaces toward Catan.`;
+      }
+    } else {
+      const g = GATES[last.e];
+      const lvl = Math.max(1, last.r - 1);
+      $('eventTitle').textContent = `${g.name} gate`;
+      $('eventSub').textContent = lvl === 1
+        ? `Red ${last.r}: everyone with any ${g.name} improvement draws a progress card.`
+        : `Red ${last.r}: players with ${g.name} level ${lvl} or higher draw a progress card.`;
+    }
+    if (s === 7) {
+      note.hidden = false;
+      note.innerHTML = b.attacks === 0
+        ? '<b>Robber</b>The robber stays in the desert until the first barbarian attack.'
+        : '<b>Robber</b>Move the robber. Players over their hand limit discard half.';
+    } else {
+      note.hidden = true;
+    }
+  }
+
+  function renderBarbarian(b) {
+    const at = b.hit ? 7 : b.pos;
+    const track = $('barbTrack');
+    track.classList.toggle('attack', b.hit);
+    track.style.setProperty('--p', at / 7);
+    track.setAttribute('aria-label', b.hit ? 'Barbarians attack' : `Barbarian ship at ${b.pos} of 7`);
+    track.innerHTML = Array.from({ length: 8 }, (_, i) => {
+      if (i === at) return `<span class="node ship${i === 7 ? ' goal' : ''}">${shipSvg()}</span>`;
+      if (i === 7) return `<span class="node goal">${gateSvg('var(--surface)')}</span>`;
+      return `<span class="node${i < at ? ' past' : ''}"></span>`;
+    }).join('');
+    const count = $('barbCount');
+    count.textContent = b.hit ? 'Attack!' : `${b.pos} / 7`;
+    count.classList.toggle('attack', b.hit);
+    $('attacks').textContent = b.attacks === 0 ? 'No attacks yet' : `${b.attacks} attack${b.attacks === 1 ? '' : 's'}`;
+    const robber = $('robber');
+    robber.textContent = b.attacks === 0 ? 'Robber in the desert' : 'Robber active';
+    robber.classList.toggle('on', b.attacks > 0);
+  }
+
+  function renderRecent() {
+    const list = $('recent');
+    if (!st.rolls.length) {
+      list.innerHTML = '<li class="empty">Rolls appear here, newest first.</li>';
+      return;
+    }
+    list.innerHTML = st.rolls.slice(-18).reverse().map((x, i) =>
+      `<li class="chip${i === 0 ? ' newest' : ''}" title="${x.r + x.y} (red ${x.r}, yellow ${x.y}) · ${eventName(x.e)}"><b>${x.r + x.y}</b>${eventSvg(x.e)}</li>`
+    ).join('');
+  }
+
+  function renderChart(t) {
+    counts = t.sums;
+    total = sumOf(counts);
+    const n = total;
+    const basis = n || 36;
+    const maxC = Math.max(...SUMS.map(s => counts[s]));
+    const yMax = Math.max(maxC, basis * 6 / 36) * 1.18;
+    const last = st.rolls[st.rolls.length - 1];
+    const lastSum = last ? last.r + last.y : null;
+    cols.forEach(col => {
+      const s = +col.dataset.s, c = counts[s], e = basis * WAYS[s] / 36;
+      col.querySelector('.bar').style.height = (c / yMax * 100) + '%';
+      col.querySelector('.ghost').style.height = (e / yMax * 100) + '%';
+      const label = col.querySelector('.count');
+      label.textContent = c;
+      label.style.bottom = `calc(${Math.max(c, e) / yMax * 100}% + 4px)`;
+      label.style.visibility = n ? 'visible' : 'hidden';
+      col.classList.toggle('latest', s === lastSum);
+      col.setAttribute('aria-label', n
+        ? `${s}: rolled ${c} times, expected ${e.toFixed(1)}`
+        : `${s}: expected on ${pct(WAYS[s] / 36)} of rolls`);
+    });
+    const hand = n - st.rolls.length;
+    $('distMeta').innerHTML = `<strong>${n}</strong> roll${n === 1 ? '' : 's'} this game` + (hand > 0 ? ` · ${hand} entered by hand` : '');
+    $('expLabel').textContent = n ? `Expected after ${n} roll${n === 1 ? '' : 's'}` : 'Expected';
+    $('emptyNote').hidden = !!n;
+    if (!tip.hidden) hideTip();
+  }
+
+  function renderTally(t) {
+    const n = sumOf(t.events);
+    $('tally').innerHTML = EV_KEYS.map(k => {
+      const m = EVENT_META[k];
+      return `<li>${m.icon}<div style="min-width:0"><div class="t-name">${m.name}</div><div class="t-val"><b>${t.events[k]}</b><span>exp ${(n * m.p).toFixed(1)}</span></div></div></li>`;
+    }).join('');
+  }
+
+  const isBlank = () => !st.rolls.length && !st.barb.pos && !st.barb.attacks
+    && Object.values(st.adj.sums).every(v => !v) && Object.values(st.adj.events).every(v => !v);
+
+  function render(fresh = false) {
+    const last = st.rolls[st.rolls.length - 1];
+    const t = totals();
+    renderReadout(last, st.barb);
+    renderBarbarian(st.barb);
+    renderRecent();
+    renderChart(t);
+    renderTally(t);
+    $('undo').disabled = !st.rolls.length;
+    $('reset').disabled = isBlank();
+    if (fresh && !reduced) {
+      const sum = $('sum');
+      sum.classList.remove('pop');
+      void sum.offsetWidth;
+      sum.classList.add('pop');
+    }
+  }
+
+  // Keep the screen on during a game, where the browser allows it
+  let wakeLock = null;
+  async function keepAwake() {
+    try {
+      if ('wakeLock' in navigator && !wakeLock && document.visibilityState === 'visible') {
+        wakeLock = await navigator.wakeLock.request('screen');
+        wakeLock.addEventListener('release', () => { wakeLock = null; });
+      }
+    } catch {}
+  }
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible' && st.rolls.length) keepAwake();
+  });
+
+  const dieEls = [$('dieRed'), $('dieYellow'), $('dieEvent')];
+  function roll() {
+    if (busy) return;
+    busy = true;
+    keepAwake();
+    const result = throwDice();
+    const commit = () => {
+      advance(st.barb, result);
+      st.rolls.push(result);
+      save();
+      render(true);
+      busy = false;
+    };
+    if (reduced) { commit(); return; }
+    $('tray').classList.remove('idle');
+    dieEls.forEach(el => { el.classList.remove('tumble'); void el.offsetWidth; el.classList.add('tumble'); });
+    const flicker = setInterval(() => paintDice(throwDice()), 70);
+    setTimeout(() => { clearInterval(flicker); commit(); }, 560);
+  }
+
+  const rollBtn = $('roll');
+  const dlg = $('settings');
+  rollBtn.addEventListener('click', roll);
+  document.addEventListener('keydown', e => {
+    if (e.code !== 'Space' && e.key !== ' ') return;
+    if (dlg.open) return;
+    if (e.target.closest && e.target.closest('button, input, textarea, select, [tabindex]')) return;
+    e.preventDefault();
+    if (e.repeat) return;
+    rollBtn.classList.add('pressed');
+    setTimeout(() => rollBtn.classList.remove('pressed'), 110);
+    roll();
+  });
+
+  $('undo').addEventListener('click', e => {
+    if (busy || !st.rolls.length) return;
+    const x = st.rolls.pop();
+    const b = st.barb;
+    if (isShip(x.e)) {
+      if (x.a) { b.pos = 6; b.attacks = Math.max(0, b.attacks - 1); }
+      else b.pos = Math.max(0, b.pos - 1);
+    }
+    const prev = st.rolls[st.rolls.length - 1];
+    b.hit = !!(prev && prev.a && b.pos === 0);
+    save();
+    render();
+    if (e.detail > 0) e.currentTarget.blur();
+  });
+
+  const resetBtn = $('reset');
+  let resetTimer = null;
+  const disarm = () => { clearTimeout(resetTimer); resetBtn.classList.remove('confirm'); resetBtn.textContent = 'Reset'; };
+  resetBtn.addEventListener('click', e => {
+    if (busy || isBlank()) return;
+    if (resetBtn.classList.contains('confirm')) {
+      disarm();
+      st = freshState();
+      save();
+      render();
+      if (e.detail > 0) resetBtn.blur();
+    } else {
+      resetBtn.classList.add('confirm');
+      resetBtn.textContent = 'Tap again to reset';
+      resetTimer = setTimeout(disarm, 3500);
+    }
+  });
+
+  // Settings dialog
+  const stepperHTML = (id, label) => `<div class="stepper">
+      <button type="button" data-for="${id}" data-step="-1" aria-label="Decrease ${label}">−</button>
+      <input id="${id}" type="number" inputmode="numeric" min="0" max="999" step="1" aria-label="${label}">
+      <button type="button" data-for="${id}" data-step="1" aria-label="Increase ${label}">+</button>
+    </div>`;
+  $('seg').innerHTML = Array.from({ length: 7 }, (_, i) =>
+    `<input type="radio" name="shipPos" id="pos${i}" value="${i}"><label for="pos${i}">${shipSvg()}<span>${i}</span></label>`
+  ).join('');
+  $('sumGrid').innerHTML = SUMS.map(s =>
+    `<div class="count-cell">${tokenHTML(s)}${stepperHTML(`setSum${s}`, `times ${s} was rolled`)}</div>`
+  ).join('');
+  $('evGrid').innerHTML = EV_KEYS.map(k =>
+    `<div class="count-cell"><span class="ev-name">${EVENT_META[k].icon}<span>${EVENT_META[k].name}</span></span>${stepperHTML(`setEv-${k}`, `${EVENT_META[k].name} count`)}</div>`
+  ).join('');
+
+  const fieldVal = id => int($(id).value, 0, id === 'setAttacks' ? 99 : 999);
+  function updateDialogTotals() {
+    const sums = SUMS.reduce((a, s) => a + fieldVal(`setSum${s}`), 0);
+    const evs = EV_KEYS.reduce((a, k) => a + fieldVal(`setEv-${k}`), 0);
+    $('sumTotal').textContent = `${sums} roll${sums === 1 ? '' : 's'}`;
+    $('evTotal').textContent = `${evs} roll${evs === 1 ? '' : 's'}`;
+  }
+
+  function openSettings() {
+    hideTip();
+    const t = totals();
+    $(`pos${st.barb.pos}`).checked = true;
+    $('setAttacks').value = st.barb.attacks;
+    SUMS.forEach(s => { $(`setSum${s}`).value = t.sums[s]; });
+    EV_KEYS.forEach(k => { $(`setEv-${k}`).value = t.events[k]; });
+    updateDialogTotals();
+    if (typeof dlg.showModal === 'function') dlg.showModal(); else dlg.setAttribute('open', '');
+  }
+  function closeSettings() {
+    if (typeof dlg.close === 'function') dlg.close(); else dlg.removeAttribute('open');
+  }
+
+  function applySettings() {
+    const rolled = rolledTotals();
+    SUMS.forEach(s => { st.adj.sums[s] = fieldVal(`setSum${s}`) - rolled.sums[s]; });
+    EV_KEYS.forEach(k => { st.adj.events[k] = fieldVal(`setEv-${k}`) - rolled.events[k]; });
+    const picked = dlg.querySelector('input[name="shipPos"]:checked');
+    const pos = picked ? int(picked.value, 0, 6) : st.barb.pos;
+    const attacks = fieldVal('setAttacks');
+    if (pos !== st.barb.pos || attacks !== st.barb.attacks) st.barb = { pos, attacks, hit: false };
+    disarm();
+    save();
+    render();
+  }
+
+  $('openSettings').addEventListener('click', openSettings);
+  $('closeSettings').addEventListener('click', closeSettings);
+  $('cancelSettings').addEventListener('click', closeSettings);
+  $('settingsForm').addEventListener('submit', e => {
+    e.preventDefault();
+    applySettings();
+    closeSettings();
+  });
+  dlg.addEventListener('click', e => {
+    if (e.target === dlg) { closeSettings(); return; }
+    const btn = e.target.closest('[data-step]');
+    if (!btn) return;
+    const input = $(btn.dataset.for);
+    input.value = int(Number(input.value) + Number(btn.dataset.step), 0, Number(input.max));
+    updateDialogTotals();
+  });
+  dlg.addEventListener('input', updateDialogTotals);
+  dlg.addEventListener('focusin', e => {
+    if (e.target.matches('.stepper input')) e.target.select();
+  });
+
+  window.addEventListener('resize', hideTip);
+
+  function start(data) {
+    st = data && (Array.isArray(data.rolls) || data.barb) ? normalize(data) : load();
+    render();
+  }
+  try { window.claude?.hot?.snapshot?.(() => st); } catch {}
+  const hot = window.claude?.hot;
+  if (hot?.ready) hot.ready(start); else start(hot?.data ?? {});
+})();
+</script>
+
+</body></html>
